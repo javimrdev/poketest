@@ -33,8 +33,10 @@ export default function RootLayout({
           <ApolloWrapper>
             {/* this div could be a global layout */}
             <Topbar />
-            <div className="flex flex-col min-h-screen justify-center items-center">
-              {children}
+            <div className="container mx-auto">
+              <div className="flex flex-col min-h-screen justify-center items-center">
+                {children}
+              </div>
             </div>
           </ApolloWrapper>
         </JotaiProvider>

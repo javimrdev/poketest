@@ -1,47 +1,55 @@
-import { useState, useEffect, useMemo, startTransition, useRef } from "react";
+import { useState, useMemo, startTransition } from "react";
 import { useAtom } from "jotai";
-import { Pokemon, PokemonList as PokemonListType } from "@/logic/pokemon/schemas";
+import { Pokemon } from "@/logic/pokemon/schemas";
 import { favoritesAtom } from "@/logic/pokemon/state";
 
 type Props = {
     initialPokemon: Pokemon[];
     page: number;
+    offset: number;
 }
 
-export const usePokemonList = ({ initialPokemon, page }: Props) => {
+const isPokemonOfCurrentPage = (id: number, page: number, offset: number) => {
+    const start = page * offset - offset;
+    const end = page * offset;
+    return id >= start && id < end;
+};
+
+export const usePokemonList = ({ initialPokemon, page, offset }: Props) => {
     const [favorites, setFavorites] = useAtom(favoritesAtom);
-    const [displayList, setDisplayList] = useState<Pokemon[]>(initialPokemon.filter((p) => !favorites.some((fav) => fav.id === p.id)));
+    const [nonFavorites, setNonFavorites] = useState<Pokemon[]>(initialPokemon);
 
     const toggleFavorite = (e: React.MouseEvent, id: number) => {
         e.preventDefault();
         e.stopPropagation();
+
         startTransition(() => {
             const isFavorite = favorites.some((fav) => fav.id === id);
-            const pokemon = displayList.find((p) => p.id === id);
+
             if (isFavorite) {
-                // Remove from favorites
                 const pokemonToRemove = favorites.find((p) => p.id === id);
-                setFavorites((prev) => prev.filter((fav) => fav.id !== id));
-                if (pokemonToRemove) {
-                    setDisplayList((prev) => [...prev, pokemonToRemove].toSorted((a, b) => a.id - b.id));
+                setFavorites(favorites.filter((fav) => fav.id !== id));
+                setNonFavorites(nonFavorites.filter((p) => p.id !== id));
+
+                if (pokemonToRemove && isPokemonOfCurrentPage(pokemonToRemove.id, page, offset)) {
+                    setNonFavorites(nonFavorites.filter((p) => p.id !== id).toSorted((a, b) => a.id - b.id));
                 }
             } else {
-                // Add to favorites
-                const pokemonToAdd = displayList.find((p) => p.id === id);
+                const pokemonToAdd = nonFavorites.find((p) => p.id === id);
                 if (pokemonToAdd) {
-                    setFavorites((prev) => [...prev, pokemonToAdd]);
-                    setDisplayList((prev) => prev.filter((p) => p.id !== id));
+                    setFavorites([...favorites, pokemonToAdd]);
+                    setNonFavorites(nonFavorites.filter((p) => p.id !== id).toSorted((a, b) => a.id - b.id));
                 }
             }
         });
     };
 
-    // Check if a pokemon is in favorites
-    const isFavorite = (id: number) => favorites.some(p => p.id === id);
+    const isFavorite = useMemo(() => {
+        return (id: number) => favorites.some(p => p.id === id);
+    }, [favorites]);
 
     return {
-        favorites,
-        displayList,
+        list: [...favorites, ...nonFavorites],
         page,
         toggleFavorite,
         isFavorite,
