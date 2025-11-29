@@ -20,14 +20,23 @@ export const GET_POKEMON_BY_ID = gql`
           name
         }
       }
-        pokemontypes {
-      type {
-        name
+      pokemontypes {
+        type {
+          name
+        }
       }
-    }
-    pokemonsprites {
-      sprites
-    }
+      pokemonsprites {
+        sprites
+      }
     } 
+  }
+`;
+
+export const GET_POKEMON_BY_IDS = gql`
+  query GetPokemonByIds($ids: [Int!]) {
+    pokemon(where: {id: {_in: $ids}}) {
+      name
+      id
+    }
   }
 `;
