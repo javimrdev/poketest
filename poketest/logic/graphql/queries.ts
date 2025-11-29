@@ -10,13 +10,24 @@ export const GET_POKEMON_LIST = gql`
 `;
 
 export const GET_POKEMON_BY_ID = gql`
-  query GetPokemonById($id: String!) {
-    pokemon(name: $id) {
-      id
+  query GetPokemonById($id: Int!) {
+    pokemon(where: {id: {_eq: $id}}) {
       name
-      sprites {
-        front_default
+      id
+      pokemonstats {
+        base_stat
+        stat {
+          name
+        }
+      }
+        pokemontypes {
+      type {
+        name
       }
     }
+    pokemonsprites {
+      sprites
+    }
+    } 
   }
 `;
