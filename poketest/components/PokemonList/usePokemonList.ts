@@ -17,31 +17,29 @@ const isPokemonOfCurrentPage = (id: number, page: number, offset: number) => {
 
 export const usePokemonList = ({ initialPokemon, page, offset }: Props) => {
     const [favorites, setFavorites] = useAtom(favoritesAtom);
-    const [nonFavorites, setNonFavorites] = useState<Pokemon[]>(initialPokemon);
+    const [nonFavorites, setNonFavorites] = useState<Pokemon[]>(favorites.length > 0 ? initialPokemon.filter((p) => !favorites.some((fav) => fav.id === p.id)) : initialPokemon);
 
     const toggleFavorite = (e: React.MouseEvent, id: number) => {
         e.preventDefault();
         e.stopPropagation();
 
-        startTransition(() => {
-            const isFavorite = favorites.some((fav) => fav.id === id);
+        const isFavorite = favorites.some((fav) => fav.id === id);
 
-            if (isFavorite) {
-                const pokemonToRemove = favorites.find((p) => p.id === id);
-                setFavorites(favorites.filter((fav) => fav.id !== id));
-                setNonFavorites(nonFavorites.filter((p) => p.id !== id));
+        if (isFavorite) {
+            const pokemonToRemove = favorites.find((p) => p.id === id);
+            setFavorites(favorites.filter((fav) => fav.id !== id));
+            setNonFavorites(nonFavorites.filter((p) => p.id !== id));
 
-                if (pokemonToRemove && isPokemonOfCurrentPage(pokemonToRemove.id, page, offset)) {
-                    setNonFavorites(nonFavorites.filter((p) => p.id !== id).toSorted((a, b) => a.id - b.id));
-                }
-            } else {
-                const pokemonToAdd = nonFavorites.find((p) => p.id === id);
-                if (pokemonToAdd) {
-                    setFavorites([...favorites, pokemonToAdd]);
-                    setNonFavorites(nonFavorites.filter((p) => p.id !== id).toSorted((a, b) => a.id - b.id));
-                }
+            if (pokemonToRemove && isPokemonOfCurrentPage(pokemonToRemove.id, page, offset)) {
+                setNonFavorites([pokemonToRemove, ...nonFavorites].toSorted((a, b) => a.id - b.id));
             }
-        });
+        } else {
+            const pokemonToAdd = nonFavorites.find((p) => p.id === id);
+            if (pokemonToAdd) {
+                setFavorites([...favorites, pokemonToAdd]);
+                setNonFavorites(nonFavorites.filter((p) => p.id !== id).toSorted((a, b) => a.id - b.id));
+            }
+        }
     };
 
     const isFavorite = useMemo(() => {

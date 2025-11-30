@@ -18,15 +18,13 @@ export const PokemonList = ({ pokemonList, page }: PokemonListItemsProps) => {
         list,
     } = usePokemonList({ initialPokemon: pokemonList, page, offset: OFFSET });
     return (
-        list.map((pokemon: Pokemon) => {
-            return (
-                <PokemonListItem
-                    key={pokemon.id}
-                    pokemon={pokemon}
-                    toggleFavorite={toggleFavorite}
-                    isFavorite={isFavorite}
-                />
-            );
-        })
+        list.map((pokemon: Pokemon) =>
+            <PokemonListItem
+                key={pokemon.id}
+                pokemon={pokemon}
+                toggleFavorite={toggleFavorite}
+                isFavorite={isFavorite}
+            />
+        )
     );
 };
