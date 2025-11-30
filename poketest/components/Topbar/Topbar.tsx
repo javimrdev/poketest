@@ -1,6 +1,5 @@
 import * as React from "react"
 import Link from "next/link"
-import { cn } from "@/lib/utils"
 import {
     NavigationMenu,
     NavigationMenuItem,
@@ -25,6 +24,13 @@ export const Topbar = () => {
                                 <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
                                     <Link href="/" prefetch={false}>
                                         Home
+                                    </Link>
+                                </NavigationMenuLink>
+                            </NavigationMenuItem>
+                            <NavigationMenuItem>
+                                <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                                    <Link href="/favorites/1" prefetch={false}>
+                                        Favorites
                                     </Link>
                                 </NavigationMenuLink>
                             </NavigationMenuItem>

@@ -8,18 +8,22 @@ import {
 
 type Props = {
     page: number;
+    basePath?: string;
+    totalPages?: number;
 }
 
-export const Pagination = ({ page }: Props) => {
+export const Pagination = ({ page, basePath = "", totalPages }: Props) => {
+    const showNext = totalPages ? page < totalPages : true;
+
     return (
         <PaginationComponent>
             <PaginationContent>
                 {page > 1 && <PaginationItem>
-                    <PaginationPrevious href={`/${page - 1}`} />
+                    <PaginationPrevious href={`${basePath}/${page - 1}`} />
                 </PaginationItem>}
-                <PaginationItem>
-                    <PaginationNext href={`/${page + 1}`} />
-                </PaginationItem>
+                {showNext && <PaginationItem>
+                    <PaginationNext href={`${basePath}/${page + 1}`} />
+                </PaginationItem>}
             </PaginationContent>
         </PaginationComponent>
     )
