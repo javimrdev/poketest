@@ -42,12 +42,22 @@ const PokemonSpritesSchema = z.object({
     sprites: SpritesObjectSchema,
 });
 
+const MoveNameSchema = z.object({
+    name: z.string(),
+});
+
+const PokemonMoveSchema = z.object({
+    pokemon_id: z.number().int(),
+    move: MoveNameSchema,
+});
+
 export const pokemonInfoSchema = z.object({
     name: z.string(),
     id: z.number().int(),
     pokemonstats: z.array(PokemonStatSchema),
     pokemontypes: z.array(PokemonTypeSchema),
     pokemonsprites: z.array(PokemonSpritesSchema), // Es un array
+    pokemonmoves: z.array(PokemonMoveSchema),
 }).transform(({ pokemonsprites, ...rest }) => ({
     ...rest,
     pokemonsprites: pokemonsprites[0].sprites.other.home.front_default,

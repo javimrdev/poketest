@@ -36,6 +36,30 @@ export const PokemonStatsHeader = () => {
     );
 };
 
+export const PokemonMoves = () => {
+    const { pokemonStats: { pokemonmoves } } = useContext(StatsContext);
+
+    if (!pokemonmoves || pokemonmoves.length === 0) {
+        return null;
+    }
+
+    return (
+        <div className="mt-4">
+            <h2 className="text-2xl font-semibold mb-2">Moves</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                {pokemonmoves.map((moveInfo, index) => (
+                    <span
+                        key={`${moveInfo.move.name}-${index}`}
+                        className="px-3 py-1 bg-purple-500 text-white rounded-md text-sm capitalize text-center"
+                    >
+                        {moveInfo.move.name.replace('-', ' ')}
+                    </span>
+                ))}
+            </div>
+        </div>
+    );
+};
+
 export const PokemonImage = () => {
     const { pokemonStats: { name, pokemonsprites } } = useContext(StatsContext);
     return (

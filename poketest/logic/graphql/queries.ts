@@ -28,6 +28,12 @@ export const GET_POKEMON_BY_ID = gql`
       pokemonsprites {
         sprites
       }
+      pokemonmoves(distinct_on: move_id) {
+        pokemon_id
+        move {
+          name
+        }
+      }
     } 
   }
 `;
