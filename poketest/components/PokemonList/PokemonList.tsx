@@ -3,8 +3,7 @@
 import { Pokemon } from "@/logic/pokemon/schemas";
 import { usePokemonList } from "./usePokemonList";
 import { PokemonListItem } from "./PokemonListItem/PokemonListItem";
-
-const OFFSET = 20;
+import { DEFAULT_OFFSET } from "../Pagination/config";
 
 type PokemonListItemsProps = {
     pokemonList: Pokemon[];
@@ -16,7 +15,7 @@ export const PokemonList = ({ pokemonList, page }: PokemonListItemsProps) => {
         toggleFavorite,
         isFavorite,
         list,
-    } = usePokemonList({ initialPokemon: pokemonList, page, offset: OFFSET });
+    } = usePokemonList({ initialPokemon: pokemonList, page, offset: DEFAULT_OFFSET });
     return (
         list.map((pokemon: Pokemon) =>
             <PokemonListItem

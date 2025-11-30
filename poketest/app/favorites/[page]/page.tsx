@@ -5,8 +5,7 @@ import { PokemonListWrapper } from "@/components/PokemonList/PokemonListWrapper"
 import { PokemonListItem } from "@/components/PokemonList/PokemonListItem/PokemonListItem";
 import { useFavoritesPagination } from "@/components/PokemonList/useFavoritesPagination";
 import { useParams } from "next/navigation";
-
-const OFFSET = 20;
+import { DEFAULT_OFFSET } from "@/components/Pagination/config";
 
 export default function FavoritesPage() {
     const params = useParams();
@@ -19,7 +18,7 @@ export default function FavoritesPage() {
         isFavorite,
         totalFavorites,
         totalPages,
-    } = useFavoritesPagination({ page, offset: OFFSET });
+    } = useFavoritesPagination({ page, offset: DEFAULT_OFFSET });
 
     if (isNaNPage) {
         return <div className="flex flex-col gap-4 w-full max-w-md mx-auto p-4">

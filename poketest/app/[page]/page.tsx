@@ -56,6 +56,6 @@ export default async function Page({ params }: { params: Promise<{ page: string 
         <PokemonListWrapper>
             <PokemonList pokemonList={pokemonList.data.pokemon} page={Number(page)} />
         </PokemonListWrapper>
-        <Pagination page={Number(page)} />
+        <Pagination page={Number(page)} totalPages={pokemonList.data.totalCount / 20} />
     </div>
 }

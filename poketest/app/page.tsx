@@ -28,6 +28,6 @@ export default async function Home() {
     <PokemonListWrapper>
       <PokemonList pokemonList={pokemonList.data.pokemon} page={page} />
     </PokemonListWrapper>
-    <Pagination page={page} />
+    <Pagination page={page} totalPages={pokemonList.data.totalCount / 20} />
   </div>
 }
