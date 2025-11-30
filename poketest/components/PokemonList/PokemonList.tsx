@@ -2,7 +2,7 @@
 
 import { Pokemon } from "@/logic/pokemon/schemas";
 import { usePokemonList } from "./usePokemonList";
-import { PokemonListItem } from "./PokemonListItem";
+import { PokemonListItem } from "./PokemonListItem/PokemonListItem";
 
 const OFFSET = 20;
 

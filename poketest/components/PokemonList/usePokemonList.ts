@@ -1,4 +1,4 @@
-import { useState, useMemo, startTransition } from "react";
+import { useState, useMemo } from "react";
 import { useAtom } from "jotai";
 import { Pokemon } from "@/logic/pokemon/schemas";
 import { favoritesAtom } from "@/logic/pokemon/state";
