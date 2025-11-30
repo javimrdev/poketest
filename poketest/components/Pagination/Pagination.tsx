@@ -15,6 +15,10 @@ type Props = {
 export const Pagination = ({ page, basePath = "", totalPages }: Props) => {
     const showNext = totalPages ? page < totalPages : true;
 
+    if (totalPages && totalPages <= 1) {
+        return null;
+    }
+
     return (
         <PaginationComponent>
             <PaginationContent>

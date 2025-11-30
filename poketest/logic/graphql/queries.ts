@@ -6,6 +6,11 @@ export const GET_POKEMON_LIST = gql`
         name
         id
     }
+    pokemon_aggregate {
+      aggregate {
+        count
+      }
+    }
   }
 `;
 

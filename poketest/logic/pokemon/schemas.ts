@@ -7,7 +7,15 @@ export const pokemonSchema = z.object({
 
 export const pokemonListSchema = z.object({
     pokemon: z.array(pokemonSchema),
-});
+    pokemon_aggregate: z.object({
+        aggregate: z.object({
+            count: z.number(),
+        }),
+    }),
+}).transform((data) => ({
+    pokemon: data.pokemon,
+    totalCount: data.pokemon_aggregate.aggregate.count,
+}));
 
 const SpriteUrlSchema = z.string().url().nullable();
 
