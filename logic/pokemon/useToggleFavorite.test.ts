@@ -1,42 +1,43 @@
-import { renderHook, act } from '@testing-library/react';
-import { useToggleFavorite } from './useToggleFavorite';
-import { useAtom } from 'jotai';
+import { act, renderHook } from "@testing-library/react";
+import { useAtom } from "jotai";
+import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
+import { useToggleFavorite } from "./useToggleFavorite";
 
 // Mock jotai useAtom
-jest.mock('jotai', () => ({
-    useAtom: jest.fn(),
-    atom: jest.fn(),
+vi.mock("jotai", () => ({
+  useAtom: vi.fn(),
+  atom: vi.fn(),
 }));
 
-describe('useToggleFavorite', () => {
-    const mockSetFavorites = jest.fn();
+describe("useToggleFavorite", () => {
+  const mockSetFavorites = vi.fn();
 
-    beforeEach(() => {
-        jest.clearAllMocks();
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("adds pokemon to favorites if not already favorite", () => {
+    (useAtom as Mock).mockReturnValue([[], mockSetFavorites]);
+
+    const { result } = renderHook(() => useToggleFavorite());
+
+    act(() => {
+      result.current.toggleFavorite(1, "bulbasaur");
     });
 
-    it('adds pokemon to favorites if not already favorite', () => {
-        (useAtom as jest.Mock).mockReturnValue([[], mockSetFavorites]);
+    expect(mockSetFavorites).toHaveBeenCalledWith([{ id: 1, name: "bulbasaur" }]);
+  });
 
-        const { result } = renderHook(() => useToggleFavorite());
+  it("removes pokemon from favorites if already favorite", () => {
+    const mockFavorites = [{ id: 1, name: "bulbasaur" }];
+    (useAtom as Mock).mockReturnValue([mockFavorites, mockSetFavorites]);
 
-        act(() => {
-            result.current.toggleFavorite(1, 'bulbasaur');
-        });
+    const { result } = renderHook(() => useToggleFavorite());
 
-        expect(mockSetFavorites).toHaveBeenCalledWith([{ id: 1, name: 'bulbasaur' }]);
+    act(() => {
+      result.current.toggleFavorite(1, "bulbasaur");
     });
 
-    it('removes pokemon from favorites if already favorite', () => {
-        const mockFavorites = [{ id: 1, name: 'bulbasaur' }];
-        (useAtom as jest.Mock).mockReturnValue([mockFavorites, mockSetFavorites]);
-
-        const { result } = renderHook(() => useToggleFavorite());
-
-        act(() => {
-            result.current.toggleFavorite(1, 'bulbasaur');
-        });
-
-        expect(mockSetFavorites).toHaveBeenCalledWith([]);
-    });
+    expect(mockSetFavorites).toHaveBeenCalledWith([]);
+  });
 });

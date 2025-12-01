@@ -1,8 +1,8 @@
 import { createContext } from "react";
-import { PokemonData } from "./schemas";
+import type { PokemonData } from "./schemas";
 
 type StatsContextType = {
-    pokemonStats: PokemonData;
-}
+  pokemonStats: PokemonData;
+};
 
-export const StatsContext = createContext<StatsContextType>({} as StatsContextType)
+export const StatsContext = createContext<StatsContextType>({} as StatsContextType);

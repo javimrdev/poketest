@@ -26,17 +26,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <JotaiProvider>
           <ApolloWrapper>
             {/* this div could be a global layout */}
             <Topbar />
             <div className="container mx-auto">
-              <div className="flex flex-col min-h-screen justify-center items-center">
-                {children}
-              </div>
+              <div className="flex flex-col min-h-screen justify-center items-center">{children}</div>
             </div>
           </ApolloWrapper>
         </JotaiProvider>
